@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Zenflare — Student Finance</title>
+  <style>
+    :root{
+      --electric: #007BFF;
+      --bg: #ffffff;
+      --muted: #6b7280;
+      --card: #f8fafc;
+      --max: 980px;
+    }
+    *{box-sizing:border-box}
+    body{font-family:Inter, system-ui, Arial, sans-serif; margin:0; color:#111; background:var(--bg); line-height:1.4}
+    header{display:flex; align-items:center; justify-content:space-between; padding:18px 20px; max-width:var(--max); margin:0 auto}
+    .brand{display:flex; gap:12px; align-items:center}
+    .logo{width:48px; height:48px; border-radius:10px; background:linear-gradient(135deg,var(--electric), #2aa0ff); display:flex; align-items:center; justify-content:center; color:white; font-weight:700}
+    nav a{margin-left:14px; color:var(--muted); text-decoration:none; font-weight:600}
+    .container{max-width:var(--max); margin:24px auto; padding:0 20px}
+    .hero{display:grid; gap:14px; align-items:center; grid-template-columns:1fr; margin-bottom:18px}
+    .hero h1{font-size:28px; margin:0}
+    .hero p{color:var(--muted); margin:0}
+    .btn{display:inline-block; padding:10px 14px; background:var(--electric); color:white; border-radius:8px; text-decoration:none}
+    section.card{background:var(--card); padding:16px; border-radius:12px; margin-bottom:18px}
+    .cols{display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:12px}
+    label{display:block; font-size:13px; color:var(--muted); margin-bottom:4px}
+    input, select {width:100%; padding:8px 10px; border-radius:8px; border:1px solid #e6edf3}
+    .result{font-weight:700; font-size:18px; margin-top:10px}
+    footer{padding:22px 20px; color:var(--muted); text-align:center}
+    @media(min-width:720px){
+      .hero{grid-template-columns:1fr 380px}
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="brand">
+      <div class="logo">Z</div>
+      <div>
+        <div style="font-weight:700">Zenflare</div>
+        <div style="font-size:12px; color:var(--muted)">Smart money for smart students</div>
+      </div>
+    </div>
+    <nav>
+      <a href="#budget">Budget</a>
+      <a href="#emi">EMI</a>
+      <a href="#plan">Weekly</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <div>
+        <h1>Take control of your student finances</h1>
+        <p>Track spending, calculate EMIs, and save smarter — a tiny toolbox built for students.</p>
+        <p style="margin-top:12px">
+          <a class="btn" href="#budget">Start Budgeting</a>
+          <a class="btn" style="background:#ffffff; color:var(--electric); border:1px solid var(--electric); margin-left:8px" href="#emi">Try EMI Calculator</a>
+        </p>
+      </div>
+
+      <div class="card">
+        <strong>Quick tools</strong>
+        <div style="margin-top:10px" class="cols">
+          <div style="padding:10px; border-radius:8px; background:white">
+            <div style="font-size:14px; font-weight:700">Budget Tracker</div>
+            <div style="font-size:12px; color:var(--muted)">Embed your Google Sheet here</div>
+          </div>
+          <div style="padding:10px; border-radius:8px; background:white">
+            <div style="font-size:14px; font-weight:700">EMI Calculator</div>
+            <div style="font-size:12px; color:var(--muted)">Estimate monthly payments</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="budget" class="card">
+      <h3>Budget Tracker (embed)</h3>
+      <p style="color:var(--muted); margin-top:6px">Create a Google Sheet, then choose File → Publish to web → Embed and paste the iframe URL below. Example (replace src):</p>
+
+      <!-- Replace the src with your published Google Sheets iframe link -->
+      <div style="margin-top:12px;">
+        <iframe id="sheetEmbed" src="" style="width:100%; height:360px; border:1px solid #e6edf3; border-radius:8px"></iframe>
+      </div>
+      <p style="font-size:13px; color:var(--muted); margin-top:8px">Tip: publish only the sheet you want to share — do NOT publish sensitive personal data.</p>
+    </section>
+
+    <section id="emi" class="card">
+      <h3>EMI Calculator</h3>
+      <div style="display:grid; gap:8px; max-width:420px">
+        <label for="loanAmount">Loan amount (₹)</label>
+        <input id="loanAmount" type="number" placeholder="100000" value="100000" />
+
+        <label for="annualRate">Annual interest rate (%)</label>
+        <input id="annualRate" type="number" step="0.01" placeholder="10" value="10" />
+
+        <label for="loanYears">Loan tenure (years)</label>
+        <select id="loanYears">
+          <option value="0.5">6 months</option>
+          <option value="1">1 year</option>
+          <option value="2">2 years</option>
+          <option value="3">3 years</option>
+          <option value="4">4 years</option>
+          <option value="5" selected>5 years</option>
+        </select>
+
+        <button class="btn" onclick="calculateEMI()" style="width:140px">Calculate EMI</button>
+        <div id="emiResult" class="result">—</div>
+        <div style="font-size:13px; color:var(--muted)">Example: ₹100,000 at 10% annual for 5 years → ~₹2,125 / month</div>
+      </div>
+    </section>
+
+    <section id="plan" class="card">
+      <h3>Weekly Spending (quick)</h3>
+      <p style="color:var(--muted)">Quick idea: create a Google Form that records daily spends (category, amount, necessary Y/N) and connect the responses sheet here by embedding it in the Budget Tracker section.</p>
+    </section>
+
+    <section id="contact" class="card">
+      <h3>Contact / Feedback</h3>
+      <!-- Netlify-friendly contact form -->
+      <form name="contact" method="POST" data-netlify="true">
+        <input type="hidden" name="form-name" value="contact" />
+        <label for="nm">Your name</label>
+        <input id="nm" name="name" required />
+        <label for="email">Email</label>
+        <input id="email" name="email" type="email" required />
+        <label for="msg">Message</label>
+        <textarea id="msg" name="message" rows="4" style="width:100%; padding:8px; border-radius:8px; border:1px solid #e6edf3"></textarea>
+        <p style="margin-top:10px"><button class="btn" type="submit">Send</button></p>
+      </form>
+      <p style="font-size:13px; color:var(--muted)">This form will work on Netlify (no backend required).</p>
+    </section>
+  </main>
+
+  <footer>
+    Made with ♥ for students • Zenflare
+  </footer>
+
+  <script>
+    function calculateEMI(){
+      const P = parseFloat(document.getElementById('loanAmount').value);
+      const annual = parseFloat(document.getElementById('annualRate').value) / 100;
+      const years = parseFloat(document.getElementById('loanYears').value);
+      if (!P || isNaN(P) || !years || isNaN(years)) {
+        document.getElementById('emiResult').textContent = 'Please enter valid values.';
+        return;
+      }
+      const n = Math.round(years * 12);
+      const r = annual / 12;
+      let emi;
+      if (r === 0) {
+        emi = P / n;
+      } else {
+        const pow = Math.pow(1 + r, n);
+        emi = P * r * pow / (pow - 1);
+      }
+      document.getElementById('emiResult').textContent = '₹' + emi.toFixed(2) + ' / month';
+    }
+
+    // Example: preload calculation
+    window.addEventListener('load', () => { calculateEMI(); });
+  </script>
+</body>
+</html>
